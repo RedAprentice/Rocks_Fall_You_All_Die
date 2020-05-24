@@ -32,9 +32,11 @@ public class Player : MonoBehaviour
 
     private void xyMovement()
     {
-        if ( xMove != 0 || yMove != 0 )
+        if ( (xMove != 0) || (yMove != 0) )
         {
-            player.GetComponent<Rigidbody>().velocity.Set( xMove * movementFactor, 0, yMove * movementFactor );
+            Vector3 playerMovement = new Vector3(xMove * movementFactor, 0, yMove * movementFactor);
+            player.GetComponent<Rigidbody>().velocity = playerMovement;
+            Debug.Log(player.GetComponent<Rigidbody>().velocity);
         }
     }
 
