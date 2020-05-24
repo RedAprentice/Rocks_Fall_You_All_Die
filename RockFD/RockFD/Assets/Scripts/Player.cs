@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private Vector3 xMoveV;
     private Vector3 yMoveV;
     public int hp;
-    [SerializeField] private int maxhp = 100;
+    public int maxhp = 100;
 
     // Start is called before the first frame update
     void Start()

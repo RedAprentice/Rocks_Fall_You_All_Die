@@ -34,7 +34,7 @@ public class Collectible : MonoBehaviour
         switch (gameObject.tag)
         {
             case "Bomb":
-                bombCharge += 1;
+                Bomb(ref bombCharge, bombMax);
                 break;
             case "Health":
                 HealPlayer();
@@ -44,7 +44,7 @@ public class Collectible : MonoBehaviour
 
     void HealPlayer()
     {
-        player.heal(player.hp, healthPickup, player.maxhp);
+        player.GetComponent<Player>().heal(ref player.GetComponent<Player>().hp, healthPickup, player.GetComponent<Player>().maxhp);
     }
     
     void Bomb(ref int bombCharge, int bombMax)
