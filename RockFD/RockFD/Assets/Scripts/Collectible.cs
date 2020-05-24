@@ -9,6 +9,8 @@ public class Collectible : MonoBehaviour
     public GameObject player;
     [SerializeField]
     private int healthPickup;
+    [SerializeField]
+    private int bombMax;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +44,15 @@ public class Collectible : MonoBehaviour
 
     void HealPlayer()
     {
-        player.playerHealth += healthPickup;
+        player.heal(player.hp, healthPickup, player.maxhp);
     }
-
+    
+    void Bomb(ref int bombCharge, int bombMax)
+    {
+        bombCharge += 1;
+        if(bombCharge > bombMax)
+        {
+            bombCharge = bombMax;
+        }
+    }
 }
