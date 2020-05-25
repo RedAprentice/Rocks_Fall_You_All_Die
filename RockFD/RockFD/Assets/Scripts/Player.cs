@@ -15,11 +15,16 @@ public class Player : MonoBehaviour
     private Vector3 yMoveV;
     public int hp;
     public int maxhp = 100;
+    [SerializeField]
+    private GameObject optionsMenu;
+    [SerializeField]
+    private bool isPaused;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        optionsMenu = GameObject.Find("OptionsMenu");
+        optionsMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,6 +33,7 @@ public class Player : MonoBehaviour
         xMove = Input.GetAxis(xControl);
         yMove = Input.GetAxis(yControl);
         xyMovement();
+        Menu();
     }
 
     private void xyMovement()
@@ -57,5 +63,27 @@ public class Player : MonoBehaviour
         {
             hp = maxhp;
         }
+    }
+
+    void Menu()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(isPaused != true)
+            {
+                optionsMenu.SetActive(true);
+                isPaused = true;
+            }
+            else if(isPaused == true)
+            {
+                optionsMenu.SetActive(false);
+                isPaused = false;
+            }
+        }
+    }
+
+    public void UnpauseButton()
+    {
+        isPaused = false;
     }
 }
