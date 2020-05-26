@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private string xControl = "Horizontal";
     [SerializeField] private string yControl = "Vertical";
-    [SerializeField] private float movementFactor = 12.0f;
+    [SerializeField] private float movementFactor = 7.0f;
     private float xMove = 0.0f;
     private float yMove = 0.0f;
     private Vector2 xMoveV;
@@ -41,8 +41,8 @@ public class Player : MonoBehaviour
         if ( (xMove != 0) || (yMove != 0) )
         {
             Vector2 playerMovement = new Vector2(xMove * movementFactor, yMove * movementFactor);
-            player.GetComponent<Rigidbody>().velocity = playerMovement;
-            Debug.Log(player.GetComponent<Rigidbody>().velocity);
+            player.GetComponent<Rigidbody2D>().velocity = playerMovement;
+            Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
         }
     }
 
