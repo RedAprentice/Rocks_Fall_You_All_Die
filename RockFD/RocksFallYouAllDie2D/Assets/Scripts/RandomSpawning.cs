@@ -21,15 +21,16 @@ public class RandomSpawning : MonoBehaviour
     #endregion
 
     #region Serialized Variables
-    // Variables
     [SerializeField] private Transform centralPoint;
 
     // Enemy Variables
     [SerializeField] private Transform enemyNoSpawnZone;
     [SerializeField] private float enemyNoSpawnRadius;
+    [SerializeField] private GameObject enemyPrefab;
 
     // Rock Variables
     [SerializeField] private Transform[] rockNoSpawnZone = new Transform[2]; // top left corner, bottom right corner
+    [SerializeField] private GameObject rockPrefab;
 
     #endregion
 
@@ -51,6 +52,10 @@ public class RandomSpawning : MonoBehaviour
     private float enemyRampedTime; // internal time for timer to be reset to
     private float rockTimer; 
     private float rockRampedTime; 
+
+    // Exclusion Zone variables
+    private Vector2 topLeftRock;
+    private Vector2 botRightRock;
     #endregion
 
     // Start is called before the first frame update
@@ -60,6 +65,10 @@ public class RandomSpawning : MonoBehaviour
         randomSeed = Time.time;
         randomSeed = randomSeed - Mathf.FloorToInt(randomSeed);
         Random.InitState( (int)(randomSeed * Mathf.Pow(10f, 9f) ) );
+
+        // initialize rock exclusion zone
+        topLeftRock = rockNoSpawnZone[0].position;
+        botRightRock = rockNoSpawnZone[1].position;
     }
 
     // Update is called once per frame
@@ -78,10 +87,20 @@ public class RandomSpawning : MonoBehaviour
 
     private void spawnRock()
     {
+        // Generate spawn location candidate
+        Vector2 rockSpawnCandidate = new Vector2(Random.value, Random.value); // will need to figure out where the bounds of the play
+
         // validate good spawn location
-        // decide if multiple needs to be spawned, if so how many
-        // decide typings for them
-        // instantiate them, if multiple spawned, group together based on grid
+        if (validRockSpawn(rockSpawnCandidate))
+        {
+            // decide if multiple needs to be spawned, if so how many
+
+            // decide typings for them
+
+            // instantiate them, if multiple spawned, group together based on grid
+            Instantiate(rockPrefab, rockSpawnCandidate, Quaternion.identity); // move this later with Object Pooling
+        }
+
     }
 
     private void validEnemySpawn()
@@ -89,8 +108,26 @@ public class RandomSpawning : MonoBehaviour
         // likely new class. Don't want any stuck enemies
     }
 
-    private void validRockSpawn()
+    private bool validRockSpawn( Vector2 spawnQuery )
     {
         // simple. just check exclusion zone and if there is already one
+
+        if (spawnQuery.x > topLeftRock.x && spawnQuery.x < botRightRock.x )
+        {
+            // invalid x
+            return false;
+        }
+        else
+        {
+            if (spawnQuery.y < topLeftRock.y && spawnQuery.y > botRightRock.y)
+            {
+                // invalid y
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

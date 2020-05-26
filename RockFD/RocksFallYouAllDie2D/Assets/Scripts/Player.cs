@@ -4,17 +4,32 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // Variables
     [SerializeField] private GameObject player;
+
+    #region Controls Variables
+
     [SerializeField] private string xControl = "Horizontal";
     [SerializeField] private string yControl = "Vertical";
-    [SerializeField] private float movementFactor = 7.0f;
     private float xMove = 0.0f;
     private float yMove = 0.0f;
     private Vector2 xMoveV;
     private Vector2 yMoveV;
+
+    #endregion
+
+    #region Player Stats
+
     public int hp;
     public int maxhp = 100;
+    public float movementFactor = 7.0f;
+    public float atkSpeed = 1.0f; // Times to shoot per second
+    public float atkDamage = 1.0f;
+    public float atkVelocity = 15.0f;
+    public int dmgProjectile = 9;
+    public int dmgContact = 19;
+
+    #endregion
+
     [SerializeField]
     private GameObject optionsMenu;
     [SerializeField]
@@ -85,5 +100,16 @@ public class Player : MonoBehaviour
     public void UnpauseButton()
     {
         isPaused = false;
+    }
+
+    public bool fire()
+    {
+        // grab a projectile from the object pool of player shots
+
+        // make sure to set up the interface for the shots and use it to restart startup behavior
+
+        // send it the direction the player intended. Mouse and arrow keys
+
+        return true;
     }
 }
