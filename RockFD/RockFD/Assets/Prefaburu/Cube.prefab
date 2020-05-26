@@ -125,6 +125,8 @@ MonoBehaviour:
   player: {fileID: 5179742866128903019}
   xControl: Horizontal
   yControl: Vertical
-  movementFactor: 1
+  movementFactor: 12
   hp: 0
   maxhp: 100
+  optionsMenu: {fileID: 0}
+  isPaused: 0

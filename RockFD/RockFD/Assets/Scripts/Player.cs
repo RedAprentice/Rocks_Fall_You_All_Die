@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private string xControl = "Horizontal";
     [SerializeField] private string yControl = "Vertical";
-    [SerializeField] private float movementFactor = 1.0f;
+    [SerializeField] private float movementFactor = 12.0f;
     private float xMove = 0.0f;
     private float yMove = 0.0f;
     private Vector3 xMoveV;
