@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         {
             Vector2 playerMovement = new Vector2(xMove * movementFactor, yMove * movementFactor);
             player.GetComponent<Rigidbody2D>().velocity = playerMovement;
-            Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
+            //Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
         }
     }
 
