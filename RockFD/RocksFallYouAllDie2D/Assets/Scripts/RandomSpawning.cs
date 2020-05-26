@@ -13,14 +13,10 @@ public class RandomSpawning : MonoBehaviour
     }
     enum EnemyType
     {
-        enemyEmpty,
-        enemyBomb
-    }
-
-    enum TimerType
-    {
-        rockTime,
-        enemyTime
+        enemyWalkEmpty,
+        enemyWalkBomb,
+        enemyFlyEmpty,
+        enemyFlyBomb
     }
     #endregion
 
@@ -31,15 +27,10 @@ public class RandomSpawning : MonoBehaviour
     // Enemy Variables
     [SerializeField] private Transform enemyNoSpawnZone;
     [SerializeField] private float enemyNoSpawnRadius;
-    [SerializeField] private float enemySpawnSpeed; // Base time for spawning interval
-    [SerializeField] [Range(0,1000)] private int enemySpawnRamp; // Factor to increase spawning rates
-    [SerializeField] private float enemySpawnMinTime; // Smallest interval for things to spawn
 
     // Rock Variables
     [SerializeField] private Transform[] rockNoSpawnZone = new Transform[2]; // top left corner, bottom right corner
-    [SerializeField] private float rockSpawnSpeed; // Base time for spawning interval
-    [SerializeField] [Range(0, 1000)] private int rockSpawnRamp; // Factor to increase spawning rates
-    [SerializeField] private float rockSpawnMinTime; // Smallest interval for things to spawn
+
     #endregion
 
     #region Public Variables
@@ -53,7 +44,7 @@ public class RandomSpawning : MonoBehaviour
     // Determining next spawn type
     // NOTE: Conservative amounts of bombs for moderately large chain reactions.
     private RockType nextRockSpawn = RockType.rockNeutral;
-    private EnemyType nextEnemySpawn = EnemyType.enemyBomb; // NOTE FOR LATER. First enemy is normal. Second enemy is bomb.
+    private EnemyType nextEnemySpawn = EnemyType.enemyWalkEmpty; // NOTE FOR LATER. First enemy is normal. Second enemy is bomb.
 
     // timer variables
     private float enemyTimer; // internal timer for spawning enemies
@@ -69,46 +60,12 @@ public class RandomSpawning : MonoBehaviour
         randomSeed = Time.time;
         randomSeed = randomSeed - Mathf.FloorToInt(randomSeed);
         Random.InitState( (int)(randomSeed * Mathf.Pow(10f, 9f) ) );
-
-        enemyTimer = enemySpawnSpeed;
-        enemyRampedTime = enemySpawnSpeed;
-
-        rockTimer = rockSpawnSpeed;
-        rockRampedTime = rockSpawnSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemyTimer -= Time.deltaTime;
-        rockTimer -= Time.deltaTime;
 
-        if (enemyTimer <= 0)
-        {
-            resetTimer(ref enemyTimer, ref enemyRampedTime, enemySpawnRamp, enemySpawnMinTime);
-            spawnEnemy();
-        }
-        if (rockTimer <= 0)
-        {
-            resetTimer(ref rockTimer, ref rockRampedTime, rockSpawnRamp, rockSpawnMinTime);
-            spawnRock();
-        }
-    }
-
-    // Will reset timer based on spawnRamp
-    // Params 
-    // timer: internal timer
-    // rampTime: internal tracking of time to reset to
-    // ramp: ramping factor to use
-    // minTime: minimum time for spawning
-    private void resetTimer(ref float timer, ref float rampTime, float ramp, float minTime)
-    {
-        if (timer <= minTime) timer = minTime;
-        else
-        {
-            rampTime = rampTime * (1000 / 1000 + ramp);
-            timer = rampTime;
-        }
     }
 
     private void spawnEnemy()

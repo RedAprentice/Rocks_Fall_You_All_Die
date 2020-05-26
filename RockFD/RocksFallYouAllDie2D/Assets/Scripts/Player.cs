@@ -11,8 +11,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float movementFactor = 12.0f;
     private float xMove = 0.0f;
     private float yMove = 0.0f;
-    private Vector3 xMoveV;
-    private Vector3 yMoveV;
+    private Vector2 xMoveV;
+    private Vector2 yMoveV;
     public int hp;
     public int maxhp = 100;
     [SerializeField]
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
     {
         if ( (xMove != 0) || (yMove != 0) )
         {
-            Vector3 playerMovement = new Vector3(xMove * movementFactor, 0, yMove * movementFactor);
+            Vector2 playerMovement = new Vector2(xMove * movementFactor, yMove * movementFactor);
             player.GetComponent<Rigidbody>().velocity = playerMovement;
             Debug.Log(player.GetComponent<Rigidbody>().velocity);
         }
