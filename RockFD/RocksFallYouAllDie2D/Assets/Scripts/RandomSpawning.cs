@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#region Enum Declaration
+// Enum for rocks and enemy spawns
+public enum RockType
+{
+    rockNeutral,
+    rockSmouldering
+}
+public enum EnemyType
+{
+    enemyWalkEmpty,
+    enemyWalkBomb,
+    enemyFlyEmpty,
+    enemyFlyBomb
+}
+#endregion
+
 public class RandomSpawning : MonoBehaviour
 {
-    #region Enum Declaration
-    // Enum for rocks and enemy spawns
-    enum RockType
-    {
-        rockNeutral,
-        rockSmouldering
-    }
-    enum EnemyType
-    {
-        enemyWalkEmpty,
-        enemyWalkBomb,
-        enemyFlyEmpty,
-        enemyFlyBomb
-    }
-    #endregion
+
 
     #region Serialized Variables
     [SerializeField] private Transform centralPoint;
@@ -26,11 +28,9 @@ public class RandomSpawning : MonoBehaviour
     // Enemy Variables
     [SerializeField] private Transform enemyNoSpawnZone;
     [SerializeField] private float enemyNoSpawnRadius;
-    [SerializeField] private GameObject enemyPrefab;
 
     // Rock Variables
     [SerializeField] private Transform[] rockNoSpawnZone = new Transform[2]; // top left corner, bottom right corner
-    [SerializeField] private GameObject rockPrefab;
 
     #endregion
 
@@ -69,6 +69,9 @@ public class RandomSpawning : MonoBehaviour
         // initialize rock exclusion zone
         topLeftRock = rockNoSpawnZone[0].position;
         botRightRock = rockNoSpawnZone[1].position;
+
+        // DEBUG
+        spawnRock();
     }
 
     // Update is called once per frame
@@ -90,15 +93,19 @@ public class RandomSpawning : MonoBehaviour
         // Generate spawn location candidate
         Vector2 rockSpawnCandidate = new Vector2(Random.value, Random.value); // will need to figure out where the bounds of the play
 
+        // DEBUG
+        rockSpawnCandidate = new Vector2(2.5f, 2.5f);
+
         // validate good spawn location
         if (validRockSpawn(rockSpawnCandidate))
         {
             // decide if multiple needs to be spawned, if so how many
 
             // decide typings for them
+            nextRockSpawn = RockType.rockSmouldering;
 
             // instantiate them, if multiple spawned, group together based on grid
-            Instantiate(rockPrefab, rockSpawnCandidate, Quaternion.identity); // move this later with Object Pooling
+            ObjectPooler.Instance.spawnRock(rockSpawnCandidate, nextRockSpawn);
         }
 
     }

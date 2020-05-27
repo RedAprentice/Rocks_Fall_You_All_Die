@@ -10,7 +10,7 @@ public class baseProjectile : MonoBehaviour, IProjectile
     int damage;
     float velocity;
 
-    public void spawningBehavior(Vector2 dir, int dmg, float vel)
+    public void SpawningBehavior(Vector2 dir, int dmg, float vel)
     {
         this.enabled = true;
         velocity = vel;
