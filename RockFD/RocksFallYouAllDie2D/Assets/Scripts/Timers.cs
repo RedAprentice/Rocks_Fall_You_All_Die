@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Timers : MonoBehaviour
 {
@@ -19,7 +20,6 @@ public class Timers : MonoBehaviour
     public float totalTime;
     public Text totalTimeUI;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +30,8 @@ public class Timers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        AdjustTimers();
+        //PrintTimers();
     }
 
     private void AdjustTimers()
@@ -40,26 +41,26 @@ public class Timers : MonoBehaviour
             totalTime += Time.deltaTime;
         }
 
-        if (rockTimer >= 0.0f)
+        if (rockTimer > 0.0f)
         {
             rockTimer -= Time.deltaTime;
         }
         else if (rockTimer <= 0.0f)
         {
             //Rocks fall
-
+            rockTimer = 0.0f;
             //Reset the timer
             resetTimer(ref rockTimer, ref rockRampedTimer, rockRampFactor, rockMinTime);
         }
 
-        if (rockTimer >= 0.0f)
+        if (enemyTimer > 0.0f)
         {
-            rockTimer -= Time.deltaTime;
+            enemyTimer -= Time.deltaTime;
         }
-        else if (rockTimer <= 0.0f)
+        else if (enemyTimer <= 0.0f)
         {
             //Enemies spawn
-
+            enemyTimer = 0.0f;
             //Reset the timer
             resetTimer(ref enemyTimer, ref enemyRampedTimer, enemyRampFactor, enemyMinTime);
         }
@@ -80,4 +81,9 @@ public class Timers : MonoBehaviour
             timer = rampTime;
         }
     }
+    
+    //private void PrintTimers()
+    //{
+    //    totalTimeUI.text = ("Alive For:" + TimeSpan.FromSeconds(totalTime).ToString("mm:ss"));
+    //}
 }
