@@ -16,11 +16,14 @@ public enum EnemyType
     enemyFlyEmpty,
     enemyFlyBomb
 }
+public enum Validity
+{
+    Undetermined, Valid, Invalid, Rock
+}
 #endregion
 
 public class RandomSpawning : MonoBehaviour
 {
-
 
     #region Serialized Variables
     [SerializeField] private Transform centralPoint;
@@ -31,10 +34,12 @@ public class RandomSpawning : MonoBehaviour
 
     // Rock Variables
     [SerializeField] private Transform[] rockNoSpawnZone = new Transform[2]; // top left corner, bottom right corner
-
     #endregion
 
     #region Public Variables
+    public Validity[,] validSpawns;
+    public int mapSizeX;
+    public int mapSizeY;
     #endregion
 
     #region Private Variables
@@ -70,8 +75,8 @@ public class RandomSpawning : MonoBehaviour
         topLeftRock = rockNoSpawnZone[0].position;
         botRightRock = rockNoSpawnZone[1].position;
 
-        // DEBUG
-        spawnRock();
+        // initialize the spawns array
+        validSpawns = new Validity[mapSizeX,mapSizeY];
     }
 
     // Update is called once per frame
@@ -97,7 +102,7 @@ public class RandomSpawning : MonoBehaviour
         rockSpawnCandidate = new Vector2(2.5f, 2.5f);
 
         // validate good spawn location
-        if (validRockSpawn(rockSpawnCandidate))
+        if (checkRockSpawn(rockSpawnCandidate))
         {
             // decide if multiple needs to be spawned, if so how many
 
@@ -115,18 +120,18 @@ public class RandomSpawning : MonoBehaviour
         // likely new class. Don't want any stuck enemies
     }
 
-    private bool validRockSpawn( Vector2 spawnQuery )
+    private bool checkRockSpawn( Vector2 spawnQuery )
     {
         // simple. just check exclusion zone and if there is already one
 
-        if (spawnQuery.x > topLeftRock.x && spawnQuery.x < botRightRock.x )
+        if (spawnQuery.x >= topLeftRock.x && spawnQuery.x <= botRightRock.x )
         {
             // invalid x
             return false;
         }
         else
         {
-            if (spawnQuery.y < topLeftRock.y && spawnQuery.y > botRightRock.y)
+            if (spawnQuery.y <= topLeftRock.y && spawnQuery.y >= botRightRock.y)
             {
                 // invalid y
                 return false;
@@ -137,4 +142,94 @@ public class RandomSpawning : MonoBehaviour
             }
         }
     }
+
+    // Checks a single tile to determine if something can be spawned on the tile
+    private bool checkValidity( Vector2 tile )
+    {
+        int x = (int)tile.x;
+        int y = (int)tile.y;
+        if (validSpawns[x,y] == Validity.Valid) return true;
+        else return false;
+    }
+
+    // Creates a new mapping for the validity map
+    private void generateSpawnMapping()
+    {
+        cleanSpawnMapping();
+        int x = (int)topLeftRock.x;
+        int y = (int)topLeftRock.y;
+        determineValidity(x, y);
+        finalizeValidityMap();
+    }
+
+    // determine locally if the surrounding tiles are valid
+    // recursively calls self
+    // known possible issue: Call stack might get filled.
+    private void determineValidity(int x, int y)
+    {
+        if ( (x + 1) <= mapSizeX)
+        {
+            if (validSpawns[x + 1, y] == Validity.Undetermined)
+            {
+                validSpawns[x + 1, y] = Validity.Valid;
+                determineValidity(x + 1, y);
+            } 
+        }
+        if ( (x - 1) <= 0)
+        {
+            if (validSpawns[x - 1,y] == Validity.Undetermined)
+            {
+                validSpawns[x - 1, y] = Validity.Valid;
+                determineValidity(x - 1, y);
+            }
+        }
+        if ( (y + 1) <= mapSizeY)
+        {
+            if (validSpawns[x, y + 1] == Validity.Undetermined)
+            {
+                validSpawns[x, y + 1] = Validity.Valid;
+                determineValidity(x, y + 1);
+            }
+        }
+        if ( (y - 1) <= 0)
+        {
+            if (validSpawns[x, y - 1] == Validity.Undetermined)
+            {
+                validSpawns[x, y - 1] = Validity.Valid;
+                determineValidity(x, y - 1);
+            }
+        }
+    }
+
+    // Turns any space that is not a Rock into Undetermined
+    private void cleanSpawnMapping()
+    {
+        for (int i = 0; i < mapSizeX; i++)
+        {
+            for (int j = 0; j < mapSizeY; j++)
+            {
+                if (!(validSpawns[i, j] == Validity.Rock))
+                {
+                    validSpawns[i, j] = Validity.Undetermined;
+                }
+            }
+        }
+    }
+
+    // Meant to only be called at the end of generate valid mapping
+    // Turns any leftover Undetermined tiles into Invalid tiles
+    private void finalizeValidityMap()
+    {
+        for (int i = 0; i < mapSizeX; i++)
+        {
+            for (int j = 0; j < mapSizeY; j++)
+            {
+                if ((validSpawns[i, j] == Validity.Undetermined))
+                {
+                    validSpawns[i, j] = Validity.Invalid;
+                }
+            }
+        }
+    }
+
 }
