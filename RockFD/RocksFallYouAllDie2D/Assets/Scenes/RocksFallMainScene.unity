@@ -3597,7 +3597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739bf43d6db16ad43bae1ca0f5b45cd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlive: 0
+  isAlive: 1
   rockTimer: 0
   rockRampFactor: 0
   rockMinTime: 0
@@ -4099,8 +4099,6 @@ MonoBehaviour:
   rockNoSpawnZone:
   - {fileID: 957916807}
   - {fileID: 1282409661}
-  mapSizeX: 0
-  mapSizeY: 0
 --- !u!4 &2111023988
 Transform:
   m_ObjectHideFlags: 0
