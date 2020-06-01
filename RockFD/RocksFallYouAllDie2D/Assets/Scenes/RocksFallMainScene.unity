@@ -3973,6 +3973,17 @@ MonoBehaviour:
     prefab: {fileID: 9087496026241853965, guid: 02f49b37b782ee1459ba10c2f0dbcd84,
       type: 3}
     size: 10
+  - tag: projectile
+    prefab: {fileID: 5095884345335285846, guid: e82055568a497ed4aabb38d3f51418b4,
+      type: 3}
+    size: 10
+  - tag: enemyWalker
+    prefab: {fileID: 191152027741363047, guid: e67abf67ce295dc418aa9ad460e66450, type: 3}
+    size: 10
+  - tag: enemyFlyer
+    prefab: {fileID: 1939533238449161251, guid: 5fb980b88d42f3442b483b04bfa1a59e,
+      type: 3}
+    size: 10
 --- !u!4 &2070486999
 Transform:
   m_ObjectHideFlags: 0
@@ -4099,6 +4110,8 @@ MonoBehaviour:
   rockNoSpawnZone:
   - {fileID: 957916807}
   - {fileID: 1282409661}
+  mapSizeX: 0
+  mapSizeY: 0
 --- !u!4 &2111023988
 Transform:
   m_ObjectHideFlags: 0
