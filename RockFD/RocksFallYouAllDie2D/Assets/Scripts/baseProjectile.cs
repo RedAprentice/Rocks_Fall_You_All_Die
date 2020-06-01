@@ -6,16 +6,18 @@ public class baseProjectile : MonoBehaviour, IProjectile
 {
 
     Rigidbody2D projectile;
+    Vector2 position;
     Vector2 direction;
     int damage;
-    float velocity;
+    float range;
 
-    public void SpawningBehavior(Vector2 dir, int dmg, float vel)
+    public void SpawningBehavior(Vector2 pos, Vector2 dir, int dmg, float vel, float ran)
     {
         this.enabled = true;
-        velocity = vel;
+        projectile.position = pos;
+        projectile.velocity = dir * vel;
         damage = dmg;
-        direction = dir;
+        range = ran;
     }
 
     // Start is called before the first frame update
@@ -35,10 +37,14 @@ public class baseProjectile : MonoBehaviour, IProjectile
         if (collision.tag == "rock")
         {
             // deactivate projectile
+            this.enabled = false;
         }
         else if (collision.tag == "enemy") {
             // damage enemy
+            // collision.GetComponent<>().hp -= damage;
+
             // deactivate projectile
+            this.enabled = false;
         } else
         {
             // do nothing

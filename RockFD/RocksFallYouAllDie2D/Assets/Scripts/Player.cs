@@ -10,8 +10,10 @@ public class Player : MonoBehaviour
 
     [SerializeField] private string xControl = "Horizontal";
     [SerializeField] private string yControl = "Vertical";
+    [SerializeField] private string fireControl = "Fire1";
     private float xMove = 0.0f;
     private float yMove = 0.0f;
+    private float fire = 0.0f;
     private Vector2 xMoveV;
     private Vector2 yMoveV;
 
@@ -47,7 +49,9 @@ public class Player : MonoBehaviour
     {
         xMove = Input.GetAxis(xControl);
         yMove = Input.GetAxis(yControl);
+        fire = Input.GetAxis(fireControl);
         xyMovement();
+        fireProjectile();
         Menu();
     }
 
@@ -102,14 +106,19 @@ public class Player : MonoBehaviour
         isPaused = false;
     }
 
-    public bool fire()
+    public bool fireProjectile()
     {
-        // grab a projectile from the object pool of player shots
+        if (fire > 0)
+        {
+            // grab a projectile from the object pool of player shots
 
-        // make sure to set up the interface for the shots and use it to restart startup behavior
 
-        // send it the direction the player intended. Mouse and arrow keys
+            // make sure to set up the interface for the shots and use it to restart startup behavior
 
-        return true;
+            // send it the direction the player intended. Mouse and arrow keys
+
+            return true;
+        }
+        else return false;
     }
 }
