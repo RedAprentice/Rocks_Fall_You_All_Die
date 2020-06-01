@@ -56,11 +56,18 @@ public class Player : MonoBehaviour
 
     private void xyMovement()
     {
-        if ( (xMove != 0) || (yMove != 0) )
+        if(isPaused != true)
         {
-            Vector2 playerMovement = new Vector2(xMove * movementFactor, yMove * movementFactor);
-            player.GetComponent<Rigidbody2D>().velocity = playerMovement;
-            //Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
+            if ((xMove != 0) || (yMove != 0))
+            {
+                Vector2 playerMovement = new Vector2(xMove * movementFactor, yMove * movementFactor);
+                player.GetComponent<Rigidbody2D>().velocity = playerMovement;
+                //Debug.Log(player.GetComponent<Rigidbody2D>().velocity);
+            }
+        }
+        else if(isPaused == true)
+        {
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
     }
 
@@ -120,4 +127,5 @@ public class Player : MonoBehaviour
         }
         else return false;
     }
+
 }
