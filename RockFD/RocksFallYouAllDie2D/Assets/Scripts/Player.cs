@@ -34,8 +34,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private GameObject optionsMenu;
-    [SerializeField]
-    private bool isPaused;
+    public bool isPaused;
 
     // Start is called before the first frame update
     void Start()
