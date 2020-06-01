@@ -8,7 +8,7 @@ public class Timers : MonoBehaviour
 {
     //Variables
     [SerializeField]
-    private bool isAlive;
+    private bool isAlive = true;
     public float rockTimer;
     [Range(0,1000)] public int rockRampFactor;
     [SerializeField] private float rockMinTime;
@@ -31,7 +31,7 @@ public class Timers : MonoBehaviour
     void Update()
     {
         AdjustTimers();
-        //PrintTimers();
+        PrintTimers();
     }
 
     private void AdjustTimers()
@@ -81,9 +81,12 @@ public class Timers : MonoBehaviour
             timer = rampTime;
         }
     }
-    
-    //private void PrintTimers()
-    //{
-    //    totalTimeUI.text = ("Alive For:" + TimeSpan.FromSeconds(totalTime).ToString("mm:ss"));
-    //}
+
+    private void PrintTimers()
+    {
+        string timeString = TimeSpan.FromSeconds((double)totalTime).ToString();
+        timeString = timeString.Substring(3, 5);
+
+        totalTimeUI.text = ("Alive For: " + timeString);
+    }
 }
