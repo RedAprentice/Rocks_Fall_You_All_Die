@@ -10,10 +10,12 @@ public class Player : MonoBehaviour
 
     [SerializeField] private string xControl = "Horizontal";
     [SerializeField] private string yControl = "Vertical";
-    [SerializeField] private string fireControl = "Fire1";
+    [SerializeField] private string fireHControl = "Fire1";
+    [SerializeField] private string fireVControl = "Fire2";
     private float xMove = 0.0f;
     private float yMove = 0.0f;
-    private float fire = 0.0f;
+    private float verticalFire = 0.0f;
+    private float horizontalFire = 0.0f;
     private Vector2 xMoveV;
     private Vector2 yMoveV;
 
@@ -24,9 +26,10 @@ public class Player : MonoBehaviour
     public int hp;
     public int maxhp = 100;
     public float movementFactor = 7.0f;
-    public float atkSpeed = 1.0f; // Times to shoot per second
-    public float atkDamage = 1.0f;
-    public float atkVelocity = 15.0f;
+    public float projFireRate = 1.0f; // Times to shoot per second
+    public int projDamage = 1;
+    public float projVelocity = 15.0f;
+    public float projRange = 3.0f; // Seconds
     public int dmgProjectile = 9;
     public int dmgContact = 19;
 
@@ -48,9 +51,10 @@ public class Player : MonoBehaviour
     {
         xMove = Input.GetAxis(xControl);
         yMove = Input.GetAxis(yControl);
-        fire = Input.GetAxis(fireControl);
+        horizontalFire = Input.GetAxis(fireHControl);
+        verticalFire = Input.GetAxis(fireVControl);
         xyMovement();
-        fireProjectile();
+        if ((horizontalFire >= 0.00001f || horizontalFire <= -0.00001f) || (verticalFire >+0.00001f || verticalFire <= -0.00001f)) fireProjectile();
         Menu();
     }
 
@@ -71,7 +75,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // might move this to utils class.
+    // might move hit() and heal() to utils class.
     public void hit(ref int hp, int damage)
     {
         hp -= damage;
@@ -112,20 +116,64 @@ public class Player : MonoBehaviour
         isPaused = false;
     }
 
-    public bool fireProjectile()
+    public void fireProjectile()
     {
-        if (fire > 0)
+        Vector2 fireDir;
+
+        if ( horizontalFire >= 0.00001f)
         {
-            // grab a projectile from the object pool of player shots
-
-
-            // make sure to set up the interface for the shots and use it to restart startup behavior
-
-            // send it the direction the player intended. Mouse and arrow keys
-
-            return true;
+            if (verticalFire >= 0.00001f)
+            {
+                fireDir = new Vector2 (1,1);
+            }
+            else if (verticalFire <= -0.00001f)
+            {
+                fireDir = new Vector2(1, -1);
+            }
+            else
+            {
+                fireDir = new Vector2(1, 0);
+            }
+        } else if( horizontalFire <= -0.00001f)
+        {
+            if (verticalFire >= 0.00001f)
+            {
+                fireDir = new Vector2(-1, 1);
+            }
+            else if (verticalFire <= -0.00001f)
+            {
+                fireDir = new Vector2(-1, -1);
+            }
+            else
+            {
+                fireDir = new Vector2(-1, 0);
+            }
         }
-        else return false;
+        else
+        {
+            if (verticalFire >= 0.00001f)
+            {
+                fireDir = new Vector2(0, 1);
+            }
+            else if (verticalFire <= -0.00001f)
+            {
+                fireDir = new Vector2(0, -1);
+            }
+            else
+            {
+                Debug.Log("wtf how did you end up here stop");
+                fireDir = Vector2.up;
+            }
+        }
+
+        fireDir = Vector2.ClampMagnitude(fireDir, 1);
+
+        if (Timers.Instance.playerLastShotTimer >= (1.0f/projFireRate) )
+        {
+            ObjectPooler.Instance.spawnProjectile(player.transform.position, fireDir, projDamage, projVelocity, projRange); // REPLACE VECTOR2.UP please
+            Debug.Log("Attempting to Fire Projectile");
+            Timers.Instance.playerLastShotTimer = 0.0f;
+        }
     }
 
 }

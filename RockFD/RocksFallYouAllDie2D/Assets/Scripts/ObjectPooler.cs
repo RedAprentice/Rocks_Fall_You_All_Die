@@ -79,15 +79,16 @@ public class ObjectPooler : MonoBehaviour
         return false;
     }
 
-    public bool spawnProjectile(Vector2 location, Quaternion rotation)
+    public bool spawnProjectile(Vector3 location, Vector3 direction, int damage, float velocity, float range)
     {
 
         GameObject projToSpawn = poolDict["projectile"].Dequeue();
 
         projToSpawn.SetActive(true);
-        projToSpawn.transform.position = location;
-        projToSpawn.transform.rotation = rotation;
 
+        projToSpawn.GetComponent<baseProjectile>().SpawningBehavior(location, direction, damage, velocity, range);
+
+        poolDict["projectile"].Enqueue(projToSpawn);
         return false;
     }
 
