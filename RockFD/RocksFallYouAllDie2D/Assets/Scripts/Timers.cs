@@ -9,6 +9,7 @@ public class Timers : MonoBehaviour
     //Variables
     [SerializeField]
     private bool isAlive = true;
+    public float playerLastShotTimer;
     public float rockTimer;
     [Range(0,1000)] public int rockRampFactor;
     [SerializeField] private float rockMinTime;
@@ -20,11 +21,21 @@ public class Timers : MonoBehaviour
     public float totalTime;
     public Text totalTimeUI;
 
+    #region Singleton
+    public static Timers Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
         totalTime = 0.0f;
         rockTimer = 10.0f;
+        playerLastShotTimer = 3.0f;
     }
 
     // Update is called once per frame
@@ -64,6 +75,8 @@ public class Timers : MonoBehaviour
             //Reset the timer
             resetTimer(ref enemyTimer, ref enemyRampedTimer, enemyRampFactor, enemyMinTime);
         }
+
+        playerLastShotTimer += Time.deltaTime;
     }
 
     // Will reset timer based on spawnRamp
