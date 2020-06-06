@@ -2016,6 +2016,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &848445282 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5095884345335285846, guid: e82055568a497ed4aabb38d3f51418b4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1905546551688194700}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &848445287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848445282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a70665cd609c471418077450486ea075, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &929676550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2636,7 +2654,7 @@ GameObject:
   - component: {fileID: 1405577689}
   m_Layer: 8
   m_Name: Walls
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3598,6 +3616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlive: 1
+  playerLastShotTimer: 0
   rockTimer: 0
   rockRampFactor: 0
   rockMinTime: 0
@@ -3974,8 +3993,7 @@ MonoBehaviour:
       type: 3}
     size: 10
   - tag: projectile
-    prefab: {fileID: 5095884345335285846, guid: e82055568a497ed4aabb38d3f51418b4,
-      type: 3}
+    prefab: {fileID: 848445282}
     size: 10
   - tag: enemyWalker
     prefab: {fileID: 191152027741363047, guid: e67abf67ce295dc418aa9ad460e66450, type: 3}

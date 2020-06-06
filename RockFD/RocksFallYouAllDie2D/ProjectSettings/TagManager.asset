@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Enemy
+  - Rock
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -38,6 +41,24 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Player
+    uniqueID: 1004509561
+    locked: 0
+  - name: Projectiles
+    uniqueID: 1578163321
+    locked: 0
+  - name: enemyWalker
+    uniqueID: 2256860149
+    locked: 0
+  - name: enemyFlyer
+    uniqueID: 4196896305
+    locked: 0
+  - name: Background
+    uniqueID: 2104904161
+    locked: 0
+  - name: Walls
+    uniqueID: 1854692569
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
