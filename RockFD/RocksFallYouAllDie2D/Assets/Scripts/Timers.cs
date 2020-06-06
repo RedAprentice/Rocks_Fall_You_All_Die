@@ -20,6 +20,7 @@ public class Timers : MonoBehaviour
     private float enemyRampedTimer;
     public float totalTime;
     public Text totalTimeUI;
+    private bool newBestTime;
 
     #region Singleton
     public static Timers Instance;
@@ -51,7 +52,10 @@ public class Timers : MonoBehaviour
         {
             totalTime += Time.deltaTime;
         }
-
+        else if(isAlive == false)
+        {
+            HighScore();
+        }
         if (rockTimer > 0.0f)
         {
             rockTimer -= Time.deltaTime;
@@ -101,5 +105,26 @@ public class Timers : MonoBehaviour
         timeString = timeString.Substring(3, 5);
 
         totalTimeUI.text = ("Alive For: " + timeString);
+
+        if (newBestTime == true)
+        {
+            PlayerPrefs.SetString("BestTime", timeString);
+            PlayerPrefs.SetFloat("BestTimeFloat", totalTime);
+            PlayerPrefs.Save();
+        }
     }
+
+    void HighScore()
+    {
+        if(PlayerPrefs.GetFloat("BestTimeFloat") < totalTime)
+        {
+            newBestTime = true;
+        }
+        else
+        {
+            newBestTime = false;
+        }
+    }
+
+
 }
