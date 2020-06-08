@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class baseProjectile : MonoBehaviour, IProjectile
 {
-    Vector2 position;
-    Vector2 direction;
+    Vector3 position;
+    Vector3 direction;
     int damage;
     float range;
+
+    private float rangeTracker;
 
     public void SpawningBehavior(Vector3 pos, Vector3 dir, int dmg, float vel, float ran)
     {
         Debug.Log("Adjusting Projectile on Spawn");
-        transform.position = pos;
+        position = pos;
+        transform.position = position;
         GetComponent<Rigidbody2D>().velocity = vel * dir;
         damage = dmg;
         range = ran;
@@ -62,6 +65,21 @@ public class baseProjectile : MonoBehaviour, IProjectile
                         break;
                 }
                 break;
+        }
+    }
+
+    private void Update()
+    {
+        checkRange();
+    }
+
+    void checkRange()
+    {
+        Vector3 distance = position - gameObject.transform.position;
+
+        if (Vector3.SqrMagnitude(distance) >= Mathf.Pow(range, 2))
+        {
+            gameObject.SetActive(false);
         }
     }
 

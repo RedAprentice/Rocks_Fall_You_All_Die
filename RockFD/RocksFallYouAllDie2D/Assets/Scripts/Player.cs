@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
 
         if (Timers.Instance.playerLastShotTimer >= (1.0f/projFireRate) )
         {
-            ObjectPooler.Instance.spawnProjectile(player.transform.position, fireDir, projDamage, projVelocity, projRange); // REPLACE VECTOR2.UP please
+            ObjectPooler.Instance.spawnProjectile(player.transform.position, fireDir, projDamage, projVelocity, projRange);
             Debug.Log("Attempting to Fire Projectile");
             Timers.Instance.playerLastShotTimer = 0.0f;
         }
