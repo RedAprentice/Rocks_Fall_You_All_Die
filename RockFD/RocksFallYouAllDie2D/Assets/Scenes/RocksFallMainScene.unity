@@ -2198,7 +2198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957916806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 1, z: 0}
+  m_LocalPosition: {x: 6, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 428874072}
@@ -2558,7 +2558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1282409660}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -1, z: 0}
+  m_LocalPosition: {x: 9, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 428874072}
@@ -3617,9 +3617,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   playerLastShotTimer: 0
-  rockTimer: 0
-  rockRampFactor: 0
-  rockMinTime: 0
+  rockTimer: 0.5
+  rockRampFactor: 1000
+  rockMinTime: 0.25
   enemyTimer: 0
   enemyRampFactor: 0
   enemyMinTime: 0
@@ -3991,17 +3991,17 @@ MonoBehaviour:
   - tag: rock
     prefab: {fileID: 9087496026241853965, guid: 02f49b37b782ee1459ba10c2f0dbcd84,
       type: 3}
-    size: 10
+    size: 200
   - tag: projectile
     prefab: {fileID: 848445282}
-    size: 10
+    size: 200
   - tag: enemyWalker
     prefab: {fileID: 191152027741363047, guid: e67abf67ce295dc418aa9ad460e66450, type: 3}
-    size: 10
+    size: 200
   - tag: enemyFlyer
     prefab: {fileID: 1939533238449161251, guid: 5fb980b88d42f3442b483b04bfa1a59e,
       type: 3}
-    size: 10
+    size: 200
 --- !u!4 &2070486999
 Transform:
   m_ObjectHideFlags: 0
@@ -4128,8 +4128,9 @@ MonoBehaviour:
   rockNoSpawnZone:
   - {fileID: 957916807}
   - {fileID: 1282409661}
-  mapSizeX: 0
-  mapSizeY: 0
+  rockSpawnRingFactor: 20
+  mapSizeX: 16
+  mapSizeY: 8
 --- !u!4 &2111023988
 Transform:
   m_ObjectHideFlags: 0

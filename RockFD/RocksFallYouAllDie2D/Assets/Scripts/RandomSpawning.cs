@@ -34,6 +34,7 @@ public class RandomSpawning : MonoBehaviour
 
     // Rock Variables
     [SerializeField] private Transform[] rockNoSpawnZone = new Transform[2]; // top left corner, bottom right corner
+    [SerializeField] private int rockSpawnRingFactor = 20;
     #endregion
 
     #region Public Variables
@@ -61,6 +62,10 @@ public class RandomSpawning : MonoBehaviour
     // Exclusion Zone variables
     private Vector2 topLeftRock;
     private Vector2 botRightRock;
+
+    // Misc. Rock Variables
+    private int maxRockCount;
+    private int rockCount = 0;
     #endregion
 
     // Start is called before the first frame update
@@ -75,14 +80,24 @@ public class RandomSpawning : MonoBehaviour
         topLeftRock = rockNoSpawnZone[0].position;
         botRightRock = rockNoSpawnZone[1].position;
 
+        // initialize maxRockCount
+        maxRockCount = 200; // hard coded for now. Should be the max count in the objectPooler
+        initMaxRockCount();
+
         // initialize the spawns array
         validSpawns = new Validity[mapSizeX,mapSizeY];
+        generateSpawnMapping();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Timers.Instance.rockTimer <= 0.0f && (rockCount < maxRockCount))
+        {
+            spawnRock();
+        }
 
+        //debugDump();
     }
 
     private void spawnEnemy()
@@ -96,21 +111,39 @@ public class RandomSpawning : MonoBehaviour
     private void spawnRock()
     {
         // Generate spawn location candidate
-        Vector2 rockSpawnCandidate = new Vector2(Random.value, Random.value); // will need to figure out where the bounds of the play
-
-        // DEBUG
-        rockSpawnCandidate = new Vector2(2.5f, 2.5f);
+        Vector2 rockSpawnCandidate = Vector2.zero;
+        bool finish = false;
+        int count = 0;
+        while (!finish)
+        {
+            finish = randomPointOnRing(count, ref rockSpawnCandidate);
+            count++;
+            if ((count > mapSizeX / 2) || (count > mapSizeY / 2))
+            {
+                Debug.Log("Count too big boi");
+                count = 0;
+            }
+        }
 
         // validate good spawn location
-        if (checkRockSpawn(rockSpawnCandidate))
+        if (finish)
         {
             // decide if multiple needs to be spawned, if so how many
 
             // decide typings for them
-            nextRockSpawn = RockType.rockSmouldering;
 
             // instantiate them, if multiple spawned, group together based on grid
             ObjectPooler.Instance.spawnRock(rockSpawnCandidate, nextRockSpawn);
+            rockCount++;
+            Debug.Log("Spawned a Rock");
+
+            // mark space as rock and generate new valid mapping
+            validSpawns[(int)rockSpawnCandidate.x, (int)rockSpawnCandidate.y] = Validity.Rock;
+            generateSpawnMapping();
+        }
+        else
+        {
+            Debug.Log("We couldn't get a valid spawn location.");
         }
 
     }
@@ -120,35 +153,32 @@ public class RandomSpawning : MonoBehaviour
         // likely new class. Don't want any stuck enemies
     }
 
+    // verifies that query is not in the exclusion zone
     private bool checkRockSpawn( Vector2 spawnQuery )
     {
-        // simple. just check exclusion zone and if there is already one
-
-        if (spawnQuery.x >= topLeftRock.x && spawnQuery.x <= botRightRock.x )
+        if (spawnQuery.x < topLeftRock.x || spawnQuery.x > botRightRock.x)
         {
-            // invalid x
-            return false;
+            return true;
         }
         else
         {
-            if (spawnQuery.y <= topLeftRock.y && spawnQuery.y >= botRightRock.y)
+            if (spawnQuery.y > topLeftRock.y || spawnQuery.y < botRightRock.y)
             {
-                // invalid y
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
     }
 
     // Checks a single tile to determine if something can be spawned on the tile
-    private bool checkValidity( Vector2 tile )
+    private bool checkRockValidity( Vector2 tile )
     {
         int x = (int)tile.x;
         int y = (int)tile.y;
-        if (validSpawns[x,y] == Validity.Valid) return true;
+        if (((validSpawns[x, y] == Validity.Valid) || (validSpawns[x,y] == Validity.Undetermined)) && checkRockSpawn(tile)) return true;
         else return false;
     }
 
@@ -159,7 +189,7 @@ public class RandomSpawning : MonoBehaviour
         int x = (int)topLeftRock.x;
         int y = (int)topLeftRock.y;
         determineValidity(x, y);
-        finalizeValidityMap();
+        // finalizeValidityMap();
     }
 
     // determine locally if the surrounding tiles are valid
@@ -167,7 +197,8 @@ public class RandomSpawning : MonoBehaviour
     // known possible issue: Call stack might get filled.
     private void determineValidity(int x, int y)
     {
-        if ( (x + 1) <= mapSizeX)
+        // Debug.Log("X: " + x + " Y: " + y);
+        if ( (x + 1) < mapSizeX)
         {
             if (validSpawns[x + 1, y] == Validity.Undetermined)
             {
@@ -175,15 +206,15 @@ public class RandomSpawning : MonoBehaviour
                 determineValidity(x + 1, y);
             } 
         }
-        if ( (x - 1) <= 0)
+        if ( (x - 1) >= 0)
         {
-            if (validSpawns[x - 1,y] == Validity.Undetermined)
+            if (validSpawns[x - 1, y] == Validity.Undetermined)
             {
                 validSpawns[x - 1, y] = Validity.Valid;
                 determineValidity(x - 1, y);
             }
         }
-        if ( (y + 1) <= mapSizeY)
+        if ( (y + 1) < mapSizeY)
         {
             if (validSpawns[x, y + 1] == Validity.Undetermined)
             {
@@ -191,7 +222,7 @@ public class RandomSpawning : MonoBehaviour
                 determineValidity(x, y + 1);
             }
         }
-        if ( (y - 1) <= 0)
+        if ( (y - 1) >= 0)
         {
             if (validSpawns[x, y - 1] == Validity.Undetermined)
             {
@@ -228,6 +259,102 @@ public class RandomSpawning : MonoBehaviour
                 {
                     validSpawns[i, j] = Validity.Invalid;
                 }
+            }
+        }
+    }
+
+    // Params: Ring we want to pull from, tile coordinate variable (by ref)
+    // Returns: bool if successfully found one in the chosen ring, tile coordinate (by ref)
+    private bool randomPointOnRing(int ring, ref Vector2 tile)
+    {
+
+        if ((ring > (mapSizeY / 2)) || (ring > (mapSizeX / 2)))
+        {
+            Debug.Log("Ring Size Invalid. Ring: " + ring);
+            return false;
+        }
+
+        int randX;
+        int randY;
+
+        // Define the ring
+        int xLower = ring;
+        int xUpper = mapSizeX - xLower - 1;
+        int yLower = ring;
+        int yUpper = mapSizeY - yLower - 1;
+
+        // Attempt to find a valid point in the ring
+        bool valid = false;
+        bool inRing;
+        int tries = 0;
+        while (!valid && tries < rockSpawnRingFactor)
+        {
+            inRing = false;
+
+            // Generate a new point that is within the ring we are searching
+            while (!inRing)
+            {
+                // generate new point
+                randX = Random.Range(0, mapSizeX);
+                randY = Random.Range(0, mapSizeY);
+
+                if ((randX == xUpper) || (randX == xLower))
+                {
+                    if ((randY >= yLower) && (randY <= yUpper))
+                    {
+                        inRing = true;
+                    }
+                }
+                else if((randY == yUpper) || (randY == yLower)){
+                    if ((randX >= xLower) && ( randX <= xUpper))
+                    {
+                        inRing = true;
+                    }
+                }
+                else
+                {
+                    inRing = false;
+                }
+
+                // when a point in ring is found, make a new tile
+                if (inRing)
+                {
+                    tile = new Vector2(randX, randY);
+                }
+            }
+
+            valid = checkRockValidity(tile);
+            tries++;
+        }
+
+        // Debug.Log("Tries attempted: " + tries);
+
+        if (valid) return true;
+        else return false;
+    }
+
+    // Generates maxRockCount based on the exclusion zone and map size
+    private void initMaxRockCount()
+    {
+        int excludeX = (int)(botRightRock.x) - (int)(topLeftRock.x) + 1;
+        int excludeY = (int)(topLeftRock.y) - (int)(botRightRock.y) + 1;
+        int excludeArea = excludeX * excludeY;
+        int mapArea = mapSizeX * mapSizeY;
+        int tempArea = mapArea - excludeArea;
+        if (tempArea < maxRockCount)
+        {
+            maxRockCount = tempArea;
+        }
+    }
+
+    // debug dump
+    private void debugDump()
+    {
+        for (int i = 0; i < mapSizeX; i++)
+        {
+            for (int j = 0; j < mapSizeY; j++)
+            {
+                Debug.Log("Location (" + i + ", " + j + "): " + validSpawns[i, j]);
             }
         }
     }

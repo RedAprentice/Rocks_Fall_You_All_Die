@@ -35,7 +35,8 @@ public class Timers : MonoBehaviour
     void Start()
     {
         totalTime = 0.0f;
-        rockTimer = 10.0f;
+        enemyRampedTimer = enemyTimer;
+        rockRampedTimer = rockTimer;
         playerLastShotTimer = 3.0f;
     }
 
