@@ -10,7 +10,7 @@ public class EnemyWalker : MonoBehaviour
     private float eMoveSpeed = 2.0f;
     private int damage = 1;
     [SerializeField]
-    private int eHealth;
+    private int eHealth = 10;
     private Player pCS;
 
     // Start is called before the first frame update
@@ -32,10 +32,14 @@ public class EnemyWalker : MonoBehaviour
         if(other.tag == "Player")
         {
             Utils.hit(ref pCS.hp, damage);
+            pCS.HealthCheck();
         }
         if(other.tag == "Projectile")
         {
+            
             Utils.hit(ref eHealth, pCS.projDamage);
+            HealthCheck();
+            
         }
         //Check that the player is not currently in I-frames
         //Deal damage to player health
@@ -56,6 +60,15 @@ public class EnemyWalker : MonoBehaviour
         if (Vector2.Distance(transform.position, playerPos) >= 0.7f)
         {
             transform.position = Vector2.MoveTowards(transform.position, playerPos, eMoveSpeed * Time.deltaTime);
+        }
+    }
+
+    void HealthCheck()
+    {
+        if(eHealth == 0)
+        {
+            Debug.Log("Enemy Died");
+            gameObject.SetActive(false);
         }
     }
 }
