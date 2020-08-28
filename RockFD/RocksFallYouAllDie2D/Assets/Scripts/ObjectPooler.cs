@@ -92,6 +92,19 @@ public class ObjectPooler : MonoBehaviour
         return false;
     }
 
+    public bool spawnBomb(Vector2 location)
+    {
+        GameObject bombToSpawn = poolDict["bomb"].Dequeue();
+        bombToSpawn.SetActive(true);
+        bombToSpawn.transform.position = location;
+        bombToSpawn.transform.rotation = Quaternion.identity;
+
+        bombToSpawn.GetComponent<Bomb>().SpawningBehavior();
+
+        poolDict["bomb"].Enqueue(bombToSpawn);
+        return false;
+    }
+
     public bool spawnEnemy()
     {
         return false;
