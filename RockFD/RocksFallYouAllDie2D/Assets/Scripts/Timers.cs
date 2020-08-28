@@ -6,7 +6,7 @@ using System;
 
 public class Timers : MonoBehaviour
 {
-    //Variables
+    #region Variables
     [SerializeField]
     private bool isAlive = true;
     public float playerLastShotTimer;
@@ -21,6 +21,8 @@ public class Timers : MonoBehaviour
     public float totalTime;
     public Text totalTimeUI;
     private bool newBestTime;
+    public float bombTimer;
+    #endregion
 
     #region Singleton
     public static Timers Instance;

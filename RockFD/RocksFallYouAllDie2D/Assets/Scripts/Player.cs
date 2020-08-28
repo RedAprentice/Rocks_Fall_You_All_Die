@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private GameObject player;
 
-    #region Controls Variables
+    #region Controls
 
     [SerializeField] private string xControl = "Horizontal";
     [SerializeField] private string yControl = "Vertical";
@@ -75,24 +75,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // might move hit() and heal() to utils class.
-    public void hit(ref int hp, int damage)
-    {
-        hp -= damage;
-        if ( hp < 0 )
-        {
-            hp = 0;
-        }
-    }
-
-    public void heal(ref int hp, int healing, int maxhp)
-    {
-        hp += healing;
-        if ( hp > maxhp)
-        {
-            hp = maxhp;
-        }
-    }
 
     void Menu()
     {

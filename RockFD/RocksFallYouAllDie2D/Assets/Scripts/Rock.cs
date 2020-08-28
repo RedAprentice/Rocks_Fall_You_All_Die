@@ -17,15 +17,26 @@ public class Rock : MonoBehaviour, IRock
         // Find the information needed to mark self as correct type of rock
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void explodeSelf()
+    {
+        if (myType == RockType.Normal)
+        {
+            // play ANIMATION that ends with self death
+        }
+        else if (myType == RockType.Bomb)
+        {
+            // trigger a bomb explosion on self after ANIMATION
+            // kill self
+        }
+        else
+        {
+            Debug.Log("Error in Rock.cs: myType (RockType) is not set properly");
+        }
     }
 }
