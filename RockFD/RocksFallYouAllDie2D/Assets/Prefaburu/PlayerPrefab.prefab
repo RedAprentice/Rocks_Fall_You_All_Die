@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 505913968124164598}
   - component: {fileID: 505913968124164599}
   m_Layer: 0
-  m_Name: PlaceholderCharacterSprite
-  m_TagString: Untagged
+  m_Name: PlayerPrefab
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,12 +98,15 @@ MonoBehaviour:
   player: {fileID: 505913968124164586}
   xControl: Horizontal
   yControl: Vertical
+  fireHControl: Fire1
+  fireVControl: Fire2
   hp: 0
   maxhp: 100
   movementFactor: 7
-  atkSpeed: 1
-  atkDamage: 1
-  atkVelocity: 15
+  projFireRate: 1
+  projDamage: 1
+  projVelocity: 15
+  projRange: 3
   dmgProjectile: 9
   dmgContact: 19
   optionsMenu: {fileID: 0}

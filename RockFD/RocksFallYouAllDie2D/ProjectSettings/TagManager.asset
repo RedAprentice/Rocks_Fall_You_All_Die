@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Rock
   - Wall
+  - Projectile
   layers:
   - Default
   - TransparentFX
