@@ -6,6 +6,8 @@ public class EnemyWalker : MonoBehaviour
 {
     private GameObject player;
     private Vector2 playerPos;
+    [SerializeField]
+    private float eMoveSpeed = 2.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +33,16 @@ public class EnemyWalker : MonoBehaviour
     void EnemyMovement()
     {
         playerPos = player.transform.position;
+
+        //Possibility of addition if desired to increase enemy movement speed as well as spawn rate as time goes on.
+        //if(eMoveSpeed <= 4.0f)
+        //{
+        //    eMoveSpeed += (Time.deltaTime / 8);
+        //}
+
         if (Vector2.Distance(transform.position, playerPos) >= 1.0f)
         {
-            transform.position = Vector2.MoveTowards(transform.position, playerPos, 2.0f * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, playerPos, eMoveSpeed * Time.deltaTime);
         }
     }
 }
