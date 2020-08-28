@@ -12,10 +12,12 @@ public class Player : MonoBehaviour
     [SerializeField] private string yControl = "Vertical";
     [SerializeField] private string fireHControl = "Fire1";
     [SerializeField] private string fireVControl = "Fire2";
+    [SerializeField] private string bombControl = "Fire3";
     private float xMove = 0.0f;
     private float yMove = 0.0f;
     private float verticalFire = 0.0f;
     private float horizontalFire = 0.0f;
+    private float bombFire = 0;
     private Vector2 xMoveV;
     private Vector2 yMoveV;
 
@@ -53,8 +55,10 @@ public class Player : MonoBehaviour
         yMove = Input.GetAxis(yControl);
         horizontalFire = Input.GetAxis(fireHControl);
         verticalFire = Input.GetAxis(fireVControl);
+        bombFire = Input.GetAxis(bombControl);
         xyMovement();
         if ((horizontalFire >= 0.00001f || horizontalFire <= -0.00001f) || (verticalFire >+0.00001f || verticalFire <= -0.00001f)) fireProjectile();
+        if (bombFire >= 0.5f) dropBomb();
         Menu();
     }
 
@@ -158,4 +162,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void dropBomb()
+    {
+        ObjectPooler.Instance.spawnBomb(transform.position);
+    }
 }

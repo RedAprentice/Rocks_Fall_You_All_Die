@@ -28,6 +28,7 @@ public class Rock : MonoBehaviour, IRock
         if (myType == RockType.Normal)
         {
             // play ANIMATION that ends with self death
+            deactivateSelf();
         }
         else if (myType == RockType.Bomb)
         {
@@ -38,5 +39,10 @@ public class Rock : MonoBehaviour, IRock
         {
             Debug.Log("Error in Rock.cs: myType (RockType) is not set properly");
         }
+    }
+
+    private void deactivateSelf()
+    {
+        gameObject.SetActive(false);
     }
 }

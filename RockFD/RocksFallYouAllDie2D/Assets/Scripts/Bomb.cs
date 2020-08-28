@@ -4,24 +4,15 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-
-    public bool active; 
     private float explodeTime; // moving forward on assumption that each bomb has a local timer
     [SerializeField] private int bombDamage;
     [SerializeField] private float explosionRadius;
     [SerializeField] private LayerMask explosionLayerMask;
     private Collider[] objInExplosion;
 
-    private void Start()
-    {
-
-    }
-
     // MAKE SURE TO IMPLEMENT THIS LATER
     public void SpawningBehavior()
     {
-        // uwaaaaah
-        active = true;
         explodeTime = Timers.Instance.bombTimer;
     }
 
@@ -35,6 +26,7 @@ public class Bomb : MonoBehaviour
             explodeRock();
             explodeDamage();
             // this is where we'd wait for animations to resolve before removing them.
+            // or maybe we just have the animation trigger this too.
             deactivateSelf();
         }
     }
@@ -84,6 +76,7 @@ public class Bomb : MonoBehaviour
     private void deactivateSelf()
     {
         // can't do it instantly. We got an ANIMATION to go through
+        gameObject.SetActive(false);
     }
 
 }
