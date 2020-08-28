@@ -8,6 +8,7 @@ TagManager:
   - Rock
   - Wall
   - Projectile
+  - Bomb
   layers:
   - Default
   - TransparentFX

@@ -135,7 +135,6 @@ public class RandomSpawning : MonoBehaviour
             // instantiate them, if multiple spawned, group together based on grid
             ObjectPooler.Instance.spawnRock(rockSpawnCandidate, nextRockSpawn);
             rockCount++;
-            Debug.Log("Spawned a Rock");
 
             // mark space as rock and generate new valid mapping
             validSpawns[(int)rockSpawnCandidate.x, (int)rockSpawnCandidate.y] = Validity.Rock;

@@ -13,7 +13,6 @@ public class baseProjectile : MonoBehaviour, IProjectile
 
     public void SpawningBehavior(Vector3 pos, Vector3 dir, int dmg, float vel, float ran)
     {
-        Debug.Log("Adjusting Projectile on Spawn");
         position = pos;
         transform.position = position;
         GetComponent<Rigidbody2D>().velocity = vel * dir;
@@ -85,9 +84,6 @@ public class baseProjectile : MonoBehaviour, IProjectile
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("TRIGGER");
-        Debug.Log("Collided with an: " + collision.tag);
-
         switch (collision.tag)
         {
             case "Rock":

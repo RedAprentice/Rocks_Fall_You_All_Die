@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     private float yMove = 0.0f;
     private float verticalFire = 0.0f;
     private float horizontalFire = 0.0f;
-    private float bombFire = 0;
+    private float bombFire = 0.0f;
     private Vector2 xMoveV;
     private Vector2 yMoveV;
 
@@ -55,10 +55,10 @@ public class Player : MonoBehaviour
         yMove = Input.GetAxis(yControl);
         horizontalFire = Input.GetAxis(fireHControl);
         verticalFire = Input.GetAxis(fireVControl);
-        bombFire = Input.GetAxis(bombControl);
+        // bombFire = Input.GetAxis(bombControl);
         xyMovement();
         if ((horizontalFire >= 0.00001f || horizontalFire <= -0.00001f) || (verticalFire >+0.00001f || verticalFire <= -0.00001f)) fireProjectile();
-        if (bombFire >= 0.5f) dropBomb();
+        if (Input.GetButtonDown(bombControl)) dropBomb();
         Menu();
     }
 
@@ -157,7 +157,6 @@ public class Player : MonoBehaviour
         if (Timers.Instance.playerLastShotTimer >= (1.0f/projFireRate) )
         {
             ObjectPooler.Instance.spawnProjectile(player.transform.position, fireDir, projDamage, projVelocity, projRange);
-            Debug.Log("Attempting to Fire Projectile");
             Timers.Instance.playerLastShotTimer = 0.0f;
         }
     }

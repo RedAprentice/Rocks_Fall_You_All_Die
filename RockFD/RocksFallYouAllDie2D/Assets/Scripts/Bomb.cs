@@ -5,10 +5,10 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     private float explodeTime; // moving forward on assumption that each bomb has a local timer
-    [SerializeField] private int bombDamage;
-    [SerializeField] private float explosionRadius;
+    [SerializeField] private int bombDamage = 25;
+    [SerializeField] private float explosionRadius = 2;
     [SerializeField] private LayerMask explosionLayerMask;
-    private Collider[] objInExplosion;
+    private Collider2D[] objInExplosion;
 
     // MAKE SURE TO IMPLEMENT THIS LATER
     public void SpawningBehavior()
@@ -36,18 +36,19 @@ public class Bomb : MonoBehaviour
     // load the objects that might be affected into objInExplosion
     private void getObjHit()
     {
-        objInExplosion = Physics.OverlapSphere(transform.position, explosionRadius, explosionLayerMask);
+        objInExplosion = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
     }
 
     // 'blow up' rocks within objInExplosion
     // NOTE: Identification will use Tags. Make sure to properly TAG everything on spawn!
     private void explodeRock()
     {
-        foreach (Collider hit in objInExplosion)
+        foreach (Collider2D hit in objInExplosion)
         {
-            if (hit.tag == "Rock") // will probably change this line. Don't know what tags to use yet. Do we need to care about the different rock types?
+            if (hit.tag == "Rock")
             {
-                hit.gameObject.GetComponent<Rock>().explodeSelf();
+                Debug.Log(hit.gameObject);
+                hit.GetComponent<Rock>().explodeSelf();
             }
         }
     }
@@ -55,7 +56,7 @@ public class Bomb : MonoBehaviour
     // damage NPCs and Player
     private void explodeDamage()
     {
-        foreach (Collider hit in objInExplosion)
+        foreach (Collider2D hit in objInExplosion)
         {
             if (hit.tag == "Player")
             {

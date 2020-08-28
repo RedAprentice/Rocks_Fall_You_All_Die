@@ -18,7 +18,7 @@ public class ObjectPooler : MonoBehaviour
     public List<Pool> pools;
 
     public Queue<GameObject> rockQ;
-    public Queue<GameObject> enemyQ;
+    public Queue<GameObject> enemyWalkerQ;
 
     #region Singleton
     public static ObjectPooler Instance;
@@ -49,21 +49,11 @@ public class ObjectPooler : MonoBehaviour
             poolDict.Add(pool.tag, objectPool);
         }
 
-        if (!poolDict.ContainsKey("rock")) Debug.Log("No rock queue detected.");
-        else rockQ = poolDict["rock"];
+        //if (!poolDict.ContainsKey("rock")) Debug.Log("No rock queue detected.");
+        //else rockQ = poolDict["rock"];
 
-        if (!poolDict.ContainsKey("enemy")) Debug.Log("No enemy queue detected.");
-        else enemyQ = poolDict["enemy"];
-
-
-        //DEBUG
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        //if (!poolDict.ContainsKey("enemyWalker")) Debug.Log("No enemy queue detected.");
+        //else enemyWalkerQ = poolDict["enemyWalker"];
     }
 
     public bool spawnRock(Vector2 location, RockType type, string tag = "rock")
