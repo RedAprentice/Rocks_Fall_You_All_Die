@@ -82,9 +82,9 @@ public class baseProjectile : MonoBehaviour, IProjectile
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D hit)
     {
-        switch (collision.tag)
+        switch (hit.tag)
         {
             case "Rock":
                 gameObject.SetActive(false);

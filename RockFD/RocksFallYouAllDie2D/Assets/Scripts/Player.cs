@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -164,5 +165,13 @@ public class Player : MonoBehaviour
     public void dropBomb()
     {
         ObjectPooler.Instance.spawnBomb(transform.position);
+    }
+
+    public void HealthCheck()
+    {
+        if(hp == 0)
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

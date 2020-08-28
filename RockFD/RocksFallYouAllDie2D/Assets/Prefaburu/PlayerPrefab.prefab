@@ -100,7 +100,8 @@ MonoBehaviour:
   yControl: Vertical
   fireHControl: Fire1
   fireVControl: Fire2
-  hp: 0
+  bombControl: Fire3
+  hp: 5
   maxhp: 100
   movementFactor: 7
   projFireRate: 1
