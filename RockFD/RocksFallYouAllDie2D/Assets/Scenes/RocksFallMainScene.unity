@@ -4252,11 +4252,6 @@ PrefabInstance:
       propertyPath: optionsMenu
       value: 
       objectReference: {fileID: 1971005390}
-    - target: {fileID: 505913968124164587, guid: e64b93e8c684f1c419fe5a08b78dd4a1,
-        type: 3}
-      propertyPath: hp
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 505913968124164597, guid: e64b93e8c684f1c419fe5a08b78dd4a1,
         type: 3}
       propertyPath: m_LocalPosition.x
