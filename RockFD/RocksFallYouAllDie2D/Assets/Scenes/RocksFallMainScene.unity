@@ -3625,6 +3625,7 @@ MonoBehaviour:
   enemyMinTime: 0
   totalTime: 0
   totalTimeUI: {fileID: 1007430088}
+  bombTimer: 0
 --- !u!4 &1761107320
 Transform:
   m_ObjectHideFlags: 0
@@ -4305,6 +4306,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 505913968124164598, guid: e64b93e8c684f1c419fe5a08b78dd4a1,
+        type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e64b93e8c684f1c419fe5a08b78dd4a1, type: 3}

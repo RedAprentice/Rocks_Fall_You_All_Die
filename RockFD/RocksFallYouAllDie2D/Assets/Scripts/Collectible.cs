@@ -44,7 +44,7 @@ public class Collectible : MonoBehaviour
 
     void HealPlayer()
     {
-        player.GetComponent<Player>().heal(ref player.GetComponent<Player>().hp, healthPickup, player.GetComponent<Player>().maxhp);
+        Utils.heal(ref player.GetComponent<Player>().hp, healthPickup, player.GetComponent<Player>().maxhp);
     }
     
     void Bomb(ref int bombCharge, int bombMax)
